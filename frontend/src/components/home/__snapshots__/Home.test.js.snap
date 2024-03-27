@@ -146,18 +146,6 @@ exports[`Home it renders without crashing 1`] = `
               Host Management
             </div>
           </div>
-          <div
-            class="home-card directors col-12 col-md-4"
-          >
-            <div
-              class="cardimgtop"
-            />
-            <div
-              class="cardbody d-flex justify-content-center align-items-center"
-            >
-              Directors
-            </div>
-          </div>
         </div>
       </div>
     </div>

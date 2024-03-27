@@ -16,7 +16,7 @@ const PendingMemberList = ({ users, onResendInvite, onDeleteMember }) => {
             {
               label: (
                 <ModalDialog
-                  id="deletePendingMemberDialog"
+                  id={`deletePendingMemberDialog-${user.id}`}
                   title="Are you sure?"
                   text="Are you sure you want to permanently delete this invitee from the records?"
                   onConfirm={() => onDeleteMember(user.id)}
@@ -53,7 +53,7 @@ const PendingMemberList = ({ users, onResendInvite, onDeleteMember }) => {
         <div className={styles["column"]}>Resend Invite</div>
         <div className={styles["column"]}>
           <ModalDialog
-            id="resendConfirmationDialog"
+            id={`resendConfirmationDialog-${user.id}`}
             title="Are you sure?"
             text="Are you sure you want to resend the registration link?"
             onConfirm={() => onResendInvite(user.id)}
