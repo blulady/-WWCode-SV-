@@ -2,7 +2,7 @@ version: 4.1.1
 jobs:
   build:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/python:3.10
         environment:
           DATABASE_URL: postgres://postgres@localhost:5432/postgres_test?sslmode=disable
       - image: circleci/postgres:12.0-alpine-ram

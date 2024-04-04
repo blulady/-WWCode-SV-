@@ -98,6 +98,54 @@ exports[`PrivateRoute it renders without crashing 1`] = `
               Chapter Members
             </div>
           </div>
+          <div
+            class="home-card social-media-team col-12 col-md-4"
+          >
+            <div
+              class="cardimgtop"
+            />
+            <div
+              class="cardbody d-flex justify-content-center align-items-center"
+            >
+              Social Media Team
+            </div>
+          </div>
+          <div
+            class="home-card tech-bloggers col-12 col-md-4"
+          >
+            <div
+              class="cardimgtop"
+            />
+            <div
+              class="cardbody d-flex justify-content-center align-items-center"
+            >
+              Tech Bloggers
+            </div>
+          </div>
+          <div
+            class="home-card tech-event-team col-12 col-md-4"
+          >
+            <div
+              class="cardimgtop"
+            />
+            <div
+              class="cardbody d-flex justify-content-center align-items-center"
+            >
+              Tech Event Team
+            </div>
+          </div>
+          <div
+            class="home-card host-management col-12 col-md-4"
+          >
+            <div
+              class="cardimgtop"
+            />
+            <div
+              class="cardbody d-flex justify-content-center align-items-center"
+            >
+              Host Management
+            </div>
+          </div>
         </div>
       </div>
     </div>

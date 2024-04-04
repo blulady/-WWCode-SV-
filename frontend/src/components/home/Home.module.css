@@ -44,6 +44,10 @@
   background: url(../../images/tech-event-team.png);
 }
 
+.directors .cardimgtop {
+  background: url(../../images/directors-card.png);
+}
+
 .cardbody {
   width: 100%;
   height: 56px;

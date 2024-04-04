@@ -28,7 +28,7 @@ jest.mock('react-router-dom', () => {
             state: {
                 memberinfo: mockMemberInfo,
                 roleinfo: mockRoleInfo,
-                teamId: 0,
+                pageId: "chapter",
                 pending: false
             }
         })
@@ -128,7 +128,7 @@ describe('ReviewMember', () => {
         expect(mockNavigation).toHaveBeenCalledWith('/member/add',
             {state: {
                 fromReview: true,
-                teamId: 0,
+                pageId: "chapter",
                 pending: false
             }
         });

@@ -18,7 +18,10 @@ axios.interceptors.response.use(
   },
   function (error) {
     const { response, message, code } = error;
-    const detail = response.data?.detail || response.data?.error || "Error details not defined";
+    const detail =
+      response.data?.detail ||
+      response.data?.error ||
+      "Error details not defined";
     console.error(message);
     console.error(`Interceptor error: ${detail}: ${code}`);
 
@@ -165,9 +168,13 @@ class WwcApi {
   }
 
   static async editMemberRoleTeams(userId, data) {
-    return await axios.put(`${BASE_URL}/user/edit/${userId}/role_teams/`, data, {
-      headers: getConfig(),
-    });
+    return await axios.put(
+      `${BASE_URL}/user/edit/${userId}/role_teams/`,
+      data,
+      {
+        headers: getConfig(),
+      }
+    );
   }
 
   static async getUserProfile() {
@@ -243,36 +250,105 @@ class WwcApi {
     });
   }
 
-  static async getCompanyHost() {
-    return await axios.get(`${BASE_URL}/host/`, {
-      headers: getConfig()
+  static async getCompanyHost(orderBy, search, filters) {
+    let url = `${BASE_URL}/host/?`;
+
+    const searchParams = new URLSearchParams();
+    if (orderBy) {
+      searchParams.set("ordering", orderBy);
+    }
+
+    if (search) {
+      searchParams.set("search", search);
+    }
+
+    url += searchParams.toString();
+    console.log(url);
+    return await axios.get(url, {
+      headers: getConfig(),
     });
   }
 
   static async deleteCompanyHost(companyId) {
     return await axios.delete(`${BASE_URL}/host/${companyId}/`, {
-      headers: getConfig()
+      headers: getConfig(),
     });
   }
 
   static async addCompanyHost(data) {
     return await axios.post(`${BASE_URL}/host/`, data, {
-      headers: getConfig()
+      headers: getConfig(),
     });
   }
 
   static async editCompanyHost(id, data) {
     return await axios.put(`${BASE_URL}/host/${id}/`, data, {
+      headers: getConfig(),
+    });
+  }
+
+  static async getTechMentors() {
+    return await axios.get(`${BASE_URL}/mentor/`, {
+      headers: getConfig()
+    });
+  }
+
+  static async getTechMentor(id) {
+    return await axios.get(`${BASE_URL}/mentor/${id}`, {
+      headers: getConfig()
+    });
+  }
+
+  static async deleteTechMentor(id) {
+    return await axios.delete(`${BASE_URL}/mentor/${id}/`, {
+      headers: getConfig()
+    });
+  }
+
+  static async addTechMentor(data) {
+    return await axios.post(`${BASE_URL}/mentor/`, data, {
+      headers: getConfig()
+    });
+  }
+
+  static async editTechMentor(id, data) {
+    return await axios.put(`${BASE_URL}/mentor/${id}/`, data, {
       headers: getConfig()
     });
   }
 
   static async requestRegistraionLink(email) {
-    return await axios.get(`${BASE_URL}/invitee/director_resend/?email=${email}`, {
-      headers: getConfig(),
-    });
+    return await axios.get(
+      `${BASE_URL}/invitee/director_resend/?email=${email}`,
+      {
+        headers: getConfig(),
+      }
+    );
   }
 
+  static async uploadImageToCloudinary(file, folder) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+    formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
+    formData.append("folder", folder);
+
+    const url = `https://api.cloudinary.com/v1_1/${formData.get(
+      "cloud_name"
+    )}/image/upload`;
+
+    try {
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading to Cloudinary", error);
+      return null;
+    }
+  }
 }
 
 export default WwcApi;

@@ -17,7 +17,7 @@ jest.mock('react-router-dom', () => {
         useLocation: () => ({
             state: {
                 fromReview: mockFromReview,
-                teamId: 0,
+                pageId: "chapter",
                 pending: false
             }
         })

@@ -17,12 +17,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    def update(self, instance, validated_data):
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.password = make_password(validated_data.get('password', instance.password))
-        instance.save()
-        return instance
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data.get('password'))
+        user = User.objects.create(**validated_data)
+        return user
 
     def validate(self, attrs):
         data = super().validate(attrs)

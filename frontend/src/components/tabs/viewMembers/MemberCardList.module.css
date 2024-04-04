@@ -1,0 +1,112 @@
+/** @format */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+    height: 35px;
+    align-items: center;
+}
+
+.pagination .page {
+    display: flex;
+    width: 21px;
+    height: 19px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination .page:not(:last-child), .pagination .break-me {
+    margin-right: 5px;
+}
+
+.pagination .link {
+    color: #333333;
+    text-decoration: none;
+}
+
+.pagination a:focus {
+    outline: none;
+}
+
+.pagination .previous {
+    list-style-type: none;
+}
+
+.pagination .prev-link:after {
+    content: "";  
+    border-color: transparent rgb(115, 65, 173);  
+    border-style: solid;  
+    border-width: 9.5px 10px 9.5px 0;  
+    display: block;  
+    height: 0;  
+    width: 0;  
+    left: -1em;  
+    position: relative;  
+}
+
+.pagination .next {
+    list-style-type: none;
+}
+
+.pagination .next-link:after {
+    content: "";  
+    border-color: transparent rgb(115, 65, 173);  
+    border-style: solid;  
+    border-width: 9.5px 0 10px 9.5px;  
+    display: block;  
+    height: 0;  
+    width: 0;  
+    right: -1em;  
+    position: relative;  
+}
+
+.pagination .active {
+    border: 1px solid #6B3768;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+.memberlist-container {
+    /* margin: 25px -30px 0 0; */
+    max-width: 1440px;
+    /* height: unset; */
+}
+
+.memberlist-container .memberlist-row > div:not(.break) {
+    margin-bottom: 25px;
+  }
+  
+.memberlist-container .memberlist-row .memberlist-card-gap {
+    margin-right: 46px;
+  }
+
+.memberlist-container {
+    width: 100%;
+    height: auto;
+}
+
+.view-member-page .memberlist-container .memberlist-row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.view-member-page .memberlist-container .memberlist-row > div:not(.break) {
+    margin-right: 0;
+    margin-bottom: 16px;
+    flex: auto;
+}
+
+.empty-users-msg {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
+    color: #48484A;
+    text-align: center;
+    width: 100%;
+    margin-top: 10vh;
+}

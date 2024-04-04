@@ -35,7 +35,7 @@ const RegistrationForm = ({ email, token, setMessageInfo, setProcessing }) => {
         setProcessing(true);
         const userData = { ...userInfo };
         try {
-            //await WwcApi.activateMember(userData); // activate new member
+            await WwcApi.activateMember(userData); // activate new member
             navigate("/login?register=true");
         } catch (error) { // error with activation
             setMessageInfo({ type: "Error", title: "Oops!", message: ERROR_REQUEST_MESSAGE }); // generic error

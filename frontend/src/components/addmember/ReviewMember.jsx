@@ -16,7 +16,7 @@ import BackToMemberPortal from "../layout/BackToMemberPortal";
 function ReviewMember(props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const teamId = location.state.teamId;
+  const pageId = location.state.pageId;
   const pending = location.state.pending;
   const data = location.state.memberinfo;
   const roleinfo = location.state.roleinfo;
@@ -80,7 +80,7 @@ function ReviewMember(props) {
         setErrorOnRequest(false);
         const results = await WwcApi.addInvitee(memberInfo);
         navigate("/member/add",
-          { state: { fromReview: true, teamId, pending }});
+          { state: { fromReview: true, pageId, pending }});
       } catch (error) {
         setErrorOnRequest(true);
         console.log(error + ':\n'+ JSON.stringify(error.response.data));
@@ -125,14 +125,14 @@ function ReviewMember(props) {
             <button
               className='chapter-member-btn'
               onClick={() => {
-                navigate("/team/0/members");
+                navigate("/chapter/members");
               }}
             >
               Chapter Members
             </button>
           </div>
           <div className='form-div'>
-          <BackToMemberPortal teamId={teamId} pending={pending} />
+          <BackToMemberPortal pageId={pageId} pending={pending} />
             <div className='row justify-content-center form-div-spacing'>
             <div className={errorOnRequest ? "show padded" : "hide"}>
               <MessageBox type="Error" title={"Sorry!"} message={ERROR_REQUEST_MESSAGE}></MessageBox>

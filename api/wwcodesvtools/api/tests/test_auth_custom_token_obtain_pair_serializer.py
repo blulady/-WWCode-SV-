@@ -80,8 +80,8 @@ class AuthCustomTokenObtainPairSerializerTestCase(TransactionTestCase):
         self.assertEquals(s.validated_data['access_expiry_in_sec'], (settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME']))
         self.assertEquals(s.validated_data['refresh_expiry_in_sec'], (settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']))
 
-    def test_it_should_raise_if_user_status_not_active(self):
-        self.user_profile.status = UserProfile.PENDING
+    def test_it_should_raise_error_if_user_status_not_active(self):
+        self.user_profile.status = UserProfile.INACTIVE
         self.user_profile.save()
 
         s = CustomTokenObtainPairSerializer(context=MagicMock(), data={

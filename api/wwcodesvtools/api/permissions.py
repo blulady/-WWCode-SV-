@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from .helper_functions import is_director_or_superuser, is_host_management_member
+from .helper_functions import is_director_or_superuser, is_host_management_member, is_user_tech_team
 
 
 class CanSendEmail(permissions.BasePermission):
@@ -65,3 +65,11 @@ class CanAccessHost(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return is_host_management_member(request.user.id)
+
+
+class CanAccessMentor(permissions.BasePermission):
+    """ Check if user can access mentors. Only Tech Event Team can
+    create, read, update, delete a mentor's information"""
+
+    def has_permission(self, request, view):
+        return is_user_tech_team(request.user.id)

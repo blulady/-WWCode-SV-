@@ -8,8 +8,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
         role = User_Team.highest_role(self.user.id)
-        if self.user.userprofile.is_pending():
-            error_message = "Not an active user, status is pending"
+        if self.user.userprofile.status != 'ACTIVE':
+            error_message = "Not an active user"
             raise exceptions.AuthenticationFailed(error_message)
         data.update({'id': self.user.id})
         data.update({'email': self.user.email})

@@ -132,7 +132,7 @@ class Mentor(models.Model):
         ('Good', 'Good'),
         ('Excellent', 'Excellent'),
     )
-    first_name = models.CharField(max_length=255, null=False, blank=False)
+    first_name = models.CharField(max_length=255, null=False, blank=False, db_collation="case_insensitive")
     last_name = models.CharField(max_length=255, null=False, blank=False)
     email = models.EmailField(max_length=255, null=False, blank=False, unique=True)
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES)

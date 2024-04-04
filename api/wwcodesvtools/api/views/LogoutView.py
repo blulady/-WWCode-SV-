@@ -13,7 +13,7 @@ logger = logging.getLogger('django')
 
 class LogoutView(APIView):
     """
-    Logs out the  user from all devices
+    Logs out the current user from all sessions
     - adds the refresh tokens belonging to the user to the black list.
     """
     permission_classes = [IsAuthenticated]
@@ -35,7 +35,9 @@ class LogoutView(APIView):
         ),
     }
 
-    @swagger_auto_schema(responses=post_response_schema)
+    @swagger_auto_schema(operation_description="Logout current user from all devices adding all refresh tokens belonging to the user to the black list",
+                         operation_summary="Logout current user from all devices",
+                         responses=post_response_schema)
     def post(self, request):
         try:
             tokens = OutstandingToken.objects.filter(user_id=request.user.id)

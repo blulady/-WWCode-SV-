@@ -4,7 +4,7 @@ from rest_framework import status
 from ...models import Invitee, Role, User_Team, UserProfile
 from rest_framework.permissions import AllowAny
 from ...views.UserRegistrationView import UserRegistrationView
-from datetime import datetime
+from api.helper_functions import generate_registration_token
 
 
 class UserRegistrationViewTestCase(TransactionTestCase):
@@ -13,14 +13,13 @@ class UserRegistrationViewTestCase(TransactionTestCase):
     CONTENT_TYPE_APPLICATION_JSON = "application/json"
     DIRECTOR_EMAIL = 'director@example.com'
     PASSWORD = 'Password123'
-    now = datetime.now().strftime('%Y%m%d%H%M%S')
-    token = f"abcdefa0342a4330bc790f23ac70a7b6{now}"
+    reg_token = generate_registration_token()
 
     def create_invitee(self):
         invitee = Invitee(email="volunteer1@example.com",
                           message="Invitee testing",
                           role=Role.objects.get(name='VOLUNTEER'),
-                          registration_token=self.token,
+                          registration_token=self.reg_token,
                           resent_counter=0,
                           created_by=User.objects.get(email=self.DIRECTOR_EMAIL)
                           )
@@ -33,7 +32,7 @@ class UserRegistrationViewTestCase(TransactionTestCase):
             "first_name": "Caroline",
             "last_name": "Miller",
             "password": "Password123",
-            "token": self.token,
+            "token": self.reg_token,
         }
 
     def __send_request(self, data):
@@ -129,8 +128,7 @@ class UserRegistrationViewTestCase(TransactionTestCase):
         Test to verify that a POST call with valid user but non-existing token return invalid token
         response.
         """
-        now = datetime.now().strftime('%Y%m%d%H%M%S')
-        invalid_token = f"abcdefa0342a4330bc790f23ac70a7b6{now}"
+        invalid_token = generate_registration_token()
         self.registration_request_data["token"] = invalid_token
         expected_error = "Invalid token. Token in request does not match the token generated for this user."
         resp = self.__send_request(self.registration_request_data)

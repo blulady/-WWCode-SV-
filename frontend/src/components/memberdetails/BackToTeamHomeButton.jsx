@@ -1,26 +1,24 @@
 import React from 'react';
 import styles from "./BackToTeamHomeButton.module.css";
 import { useNavigate } from "react-router-dom";
-import { useTeamContext } from '../../context/team/TeamContext';
+import { getNavItem } from '../../navitems';
 
 
-const BackToTeamHomeButton = ({teamId}) => {
+const BackToTeamHomeButton = ({ pageId }) => {
   const navigate = useNavigate();
-  const { teams } = useTeamContext();
-  const teamInfo = teams[teamId];
-  const teamHome = teamInfo.pages[0].label;
-  
+  const pageInfo = getNavItem(pageId);
+
   return (
     <div>
-    <button
-      className={styles['tab-selected-button']}
-      onClick={() => {
-        navigate("/team/" + teamId +"/members");
-      }}
-    >
-      {teamHome}
-    </button>
-  </div>
+      <button
+        className={styles['tab-selected-button']}
+        onClick={() => {
+          navigate(`/${pageId}/members`);
+        }}
+      >
+        {pageInfo.name}
+      </button>
+    </div>
   )
 }
 

@@ -70,23 +70,13 @@ const Login = () => {
       const {
         access,
         refresh,
-        first_name,
-        last_name,
-        id,
-        email,
-        role,
+        access_expiry_in_sec,
+        role
       } = results.data;
-      const token = { access, refresh };
-      const user = {
-        first_name,
-        last_name,
-        email,
-        id,
-        role,
-      };
+      const token = { access, refresh, access_expiry_in_sec };
       // stores access token returned in session storage
       // as {token: {access:...,refresh:...}}
-      handleSetAuth(token, user);
+      handleSetAuth(token, role);
       navigate("/");
     } catch (err) {
       form.classList.add(styles["was-validated"]);

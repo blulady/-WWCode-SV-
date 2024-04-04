@@ -1,0 +1,50 @@
+
+.tech-event-mentor-table tr > :first-child {
+    padding-left: 2vw;
+}
+
+.tech-event-mentor-tablee tr > :last-child {
+    padding-right: 2vw;
+}
+
+.tech-event-mentor-table thead {
+    height: 60px;
+    background: rgba(107, 55, 104, 0.1);
+    vertical-align: middle;
+}
+
+.tech-event-mentor-table tbody tr {
+    border-bottom: 1px solid #6B3768;
+    vertical-align: middle;
+    height: 4em;
+}
+
+.icon.delete {
+    background: url("../../../images/delete_24px.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+}
+
+.icon.edit {
+    background: url("../../../images/edit_purple_24px.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+}
+
+@media only screen and (max-width: 576px) { 
+    .icon.delete, .icon.edit {
+        width: 20px;
+        height: 20px;
+    }
+
+    button .label {
+        font-family: Open Sans;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+    }
+}

@@ -1,6 +1,5 @@
 import React from "react";
 
-import ProfileImage from "../../images/ProfileImage.png";
 import MemberImage from "../memberdetails/MemberImage";
 import ProfileBio from "./ProfileBio";
 import ProfileLocation from "./ProfileLocation";
@@ -19,7 +18,7 @@ export const ViewProfile = ({ profileData, onClickEditPassword, onClickEditProfi
             <div className={styles["p-view-profile-container"]}>
                 <div className="d-flex flex-row py-3 gap-4">
                     <div className={styles["user-profile-img"]}>
-                        <MemberImage image={ProfileImage} />
+                        <MemberImage profile={profileData} />
                     </div>
                     <div className="d-flex flex-column gap-2 justify-content-center">
                         <div className={styles["p-name"]}>{profileData.first_name + " " + profileData.last_name}</div>

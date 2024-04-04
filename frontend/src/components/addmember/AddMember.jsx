@@ -10,10 +10,10 @@ import ConfirmationModal from "./ConfirmationModal";
 import SuccessModal from "./SuccessModal";
 import BackToMemberPortal from "../layout/BackToMemberPortal";
 
-function AddMember(props) {
+function AddMember() {
   const navigate = useNavigate();
   const location = useLocation();
-  const teamId = (location.state ? location.state.teamId : 0);
+  const pageId = (location.state ? location.state.pageId : "chapter");
   const pending = (location.state ? location.state.pending : false);
   let successFlag = false;
   if (location.state) {
@@ -66,7 +66,7 @@ function AddMember(props) {
 
   const handleSubmit = (event) => {
     navigate( "/member/review", {
-      state: { memberinfo: newMember, roleinfo: memberRole, teamId, pending },
+      state: { memberinfo: newMember, roleinfo: memberRole, pageId, pending },
     });
   };
 
@@ -78,7 +78,7 @@ function AddMember(props) {
             <button
               className='chapter-member-btn'
               onClick={() => {
-                navigate("/team/0/members");
+                navigate("/chapter/members");
               }}
             >
               {" "}
@@ -86,7 +86,7 @@ function AddMember(props) {
             </button>
           </div>
           <div className='form-div'>
-            <BackToMemberPortal teamId={teamId} pending={pending}/>
+            <BackToMemberPortal pageId={pageId} pending={pending}/>
             <div className='row justify-content-center form-div-spacing'>
               <div className='form-inner'>
                 <div className='header'>Add New Member</div>
@@ -174,7 +174,7 @@ function AddMember(props) {
                   <SuccessModal
                     onClick={() => {
                       setShowSuccessModal(false);
-                      navigate("", { replace: true, state: { teamId, pending } })
+                      navigate("", { replace: true, state: { pageId, pending } })
                     }}
                   />
                 ) : null}

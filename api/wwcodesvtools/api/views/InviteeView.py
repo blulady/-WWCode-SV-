@@ -1,9 +1,9 @@
 import logging
-from api.helper_functions import send_email_helper, is_user_active
+from api.helper_functions import send_email_helper, is_user_active, generate_registration_token
 from api.models import Invitee
 from api.permissions import CanAccessInvitee
 from api.serializers.InviteeSerializer import InviteeSerializer
-from datetime import timedelta, datetime
+from datetime import timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -14,14 +14,14 @@ from django.utils import timezone
 from django.utils.http import urlencode
 from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.utils import swagger_auto_schema, no_body
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from uuid import uuid4
+
 
 logger = logging.getLogger('django')
 
@@ -57,6 +57,7 @@ class InviteeViewSet(viewsets.ModelViewSet):
     ordering_fields = ['email', 'status', 'role_name']
     search_fields = ['^email']
     queryset = Invitee.objects.all()
+    serializer_class = InviteeSerializer
 
     # Validates if the fields passed as parameters for ordering are allowed
     def validate_ordering_fields(self, fields):
@@ -89,11 +90,6 @@ class InviteeViewSet(viewsets.ModelViewSet):
             ordering_fields.append('-updated_at')
             return queryset.order_by(*ordering_fields)
         return queryset.order_by(('-updated_at'))
-
-    def get_serializer_class(self):
-        if self.action == 'create' or self.action == 'resend':
-            return None
-        return InviteeSerializer
 
     get_response_schema = {
         status.HTTP_200_OK: openapi.Response(
@@ -239,13 +235,11 @@ class InviteeViewSet(viewsets.ModelViewSet):
             role = req.get('role')
             message = req.get('message')
 
-            # validate if a user with the given email doesn't exist in the system
+            # validate if a user with the given email exists in the system
             if (is_user_active(email)):
                 return Response({'error': self.USER_ALREADY_ACTIVE_MESSAGE}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                timenow = datetime.now().strftime('%Y%m%d%H%M%S')
-                # generate random token as a 32-character hexadecimal string and timestamp
-                registration_token = str(uuid4().hex) + timenow
+                registration_token = generate_registration_token()
                 created_by = request.user.id
                 logger.debug(f'InviteeViewSet Create: token ={registration_token} : created_by ={created_by}')
 
@@ -256,8 +250,6 @@ class InviteeViewSet(viewsets.ModelViewSet):
                     "status": 'INVITED',
                     "registration_token": registration_token,
                     "resent_counter": 0,
-                    'created_at': timenow,
-                    'updated_at': timenow,
                     'created_by': created_by
                 }
 
@@ -295,7 +287,7 @@ class InviteeViewSet(viewsets.ModelViewSet):
 
     def send_email_notification(self, email, token, message):
         registration_link = f'{settings.FRONTEND_APP_URL}/register?{urlencode({"email": email, "token": token})}'
-        logger.debug(f'InviteeViewSet Create: registrationt link {registration_link}')
+        logger.debug(f'InviteeViewSet Create: registration link {registration_link}')
         context_data = {"user": email,
                         "registration_link": registration_link,
                         "optional_message": message
@@ -333,7 +325,7 @@ class InviteeViewSet(viewsets.ModelViewSet):
         ),
     }
 
-    @swagger_auto_schema(responses=post_resend_schema)
+    @swagger_auto_schema(request_body=no_body, responses=post_resend_schema)
     @action(methods=['patch'], detail=True)
     def resend(self, request, *args, **kwargs):
         error = None
@@ -344,10 +336,9 @@ class InviteeViewSet(viewsets.ModelViewSet):
 
         try:
             message = "Resending registration invitation"
-            timenow = datetime.now().strftime('%Y%m%d%H%M%S')
             target_invitee.created_by = requestor
             target_invitee.resent_counter += 1
-            target_invitee.registration_token = str(uuid4().hex) + timenow
+            target_invitee.registration_token = generate_registration_token()
             message_sent = self.send_email_notification(target_invitee.email, target_invitee.registration_token, message)
             if message_sent:
                 target_invitee.save()

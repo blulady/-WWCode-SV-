@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TransactionTestCase
-from ..permissions import CanAccessHost, CanAccessInvitee, CanSendEmail, CanDeleteMember, CanDeleteMemberRole, CanEditMember
+from ..permissions import CanAccessHost, CanAccessInvitee, CanAccessMentor, CanSendEmail, CanDeleteMember, CanDeleteMemberRole, CanEditMember
 from django.http.request import HttpRequest
 from rest_framework.generics import GenericAPIView
 
@@ -10,6 +10,7 @@ class PermissionsTestCase(TransactionTestCase):
     fixtures = ['users_data.json', 'teams_data.json', 'roles_data.json']
     _director = None
     _leader = None
+    _tech_team = None
     _volunteer = None
     _req = HttpRequest()
     _view = GenericAPIView()
@@ -18,6 +19,7 @@ class PermissionsTestCase(TransactionTestCase):
         self._director = self._director or User.objects.get(email='director@example.com')
         self._leader = self._leader or User.objects.get(email='leader@example.com')
         self._volunteer = self._volunteer or User.objects.get(email='volunteer@example.com')
+        self._tech_team = self._tech_team or User.objects.get(email='sophiefisher@example.com')
 
     # Can send email
     _can_send_email_permission = CanSendEmail()
@@ -135,3 +137,20 @@ class PermissionsTestCase(TransactionTestCase):
         self._req.user = self._volunteer
         permission = self._can_access_host_permission.has_permission(self._req, None)
         self.assertTrue(permission, 'Volunteer, is part of host management team, should have permission to access host')
+
+    _can_access_mentor_permission = CanAccessMentor()
+
+    def test_can_access_mentor_permission_false_for_no_tech_team_director(self):
+        self._req.user = self._director
+        permission = self._can_access_mentor_permission.has_permission(self._req, None)
+        self.assertFalse(permission)
+
+    def test_can_access_mentor_permission_false_for_no_tech_team_leader(self):
+        self._req.user = self._leader
+        permission = self._can_access_mentor_permission.has_permission(self._req, None)
+        self.assertFalse(permission)
+
+    def test_can_access_mentor_permission_true_for_tech_team(self):
+        self._req.user = self._tech_team
+        permission = self._can_access_mentor_permission.has_permission(self._req, None)
+        self.assertTrue(permission)

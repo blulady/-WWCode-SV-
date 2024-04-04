@@ -7,6 +7,7 @@ import TextField from "../common/forms/TextField";
 
 import MemberImage from "../memberdetails/MemberImage";
 import ProfileLocation from "./ProfileLocation";
+import ImageUpload from "./ImageUpload";
 
 import styles from "./UserProfile.module.css"
 
@@ -20,7 +21,6 @@ export const EditProfile = ({ profileData, onSubmitEditForm, onCancelEdit }) => 
           [e.target.name]: e.target.value
         });
       };
-
     const onProfileSubmit = () => {
         onSubmitEditForm(profile);
     };
@@ -30,6 +30,7 @@ export const EditProfile = ({ profileData, onSubmitEditForm, onCancelEdit }) => 
         onCancelEdit(initProfile);
     };
 
+
     return (
         <>
             <div className="d-flex flex-column align-items-center">
@@ -37,13 +38,11 @@ export const EditProfile = ({ profileData, onSubmitEditForm, onCancelEdit }) => 
                 <div className={styles["label-required"]}>Mandatory Fields</div>
             </div>
 
-            <ProfileSection header="User Profile">
+            <ProfileSection header="User Photo">
                 <div className={styles["user-profile-img"]}>
-                  <MemberImage image={ProfileImage} />
+                  <MemberImage profile={profile} />
                 </div>
-                <div>
-                    <button className="wwc-primary-button my-3">Upload Image</button>
-                </div>
+                <ImageUpload profile={profile} onProfile={setProfile}/>
                 <div>
                     Image must be square, with a minimum <br/> resolution of 100 ppi (400 X 400 pixels)
                 </div>

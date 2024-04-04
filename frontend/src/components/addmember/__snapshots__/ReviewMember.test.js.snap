@@ -106,7 +106,7 @@ exports[`ReviewMember it renders without crashing 1`] = `
                   src="arrow_back_24px.png"
                 />
                 Back to 
-                Test Page
+                Chapter Members
               </button>
             </div>
             <div

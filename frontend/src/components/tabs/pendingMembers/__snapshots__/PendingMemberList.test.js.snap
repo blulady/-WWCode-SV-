@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PendingMemberList Component Validation Tests PendingMemberList component is rendering 1`] = `
+<div>
+  <div
+    class="pending-member-list-card d-flex flex-column"
+  >
+    <div
+      class="align-self-end"
+    >
+      <div
+        aria-expanded="false"
+        class="icon more"
+        data-bs-toggle="dropdown"
+      />
+      <ul
+        class="dropdown-menu  dropdown-menu-lg-start"
+      >
+        <li>
+          <button
+            class="dropdown-item"
+            data-bs-target="#deletePendingMemberDialog-undefined"
+            data-bs-toggle="modal"
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="d-flex row"
+    >
+      <div
+        class="column"
+      >
+        Email
+      </div>
+      <div
+        class="column"
+      >
+        abc@example.com
+      </div>
+    </div>
+    <div
+      class="d-flex row"
+    >
+      <div
+        class="column"
+      >
+        Role
+      </div>
+      <div
+        class="column wwc-text-capitalize"
+      >
+        volunteer
+      </div>
+    </div>
+    <div
+      class="d-flex row"
+    >
+      <div
+        class="column"
+      >
+        Status
+      </div>
+      <div
+        class="column wwc-text-capitalize"
+      >
+        invited
+      </div>
+    </div>
+    <div
+      class="d-flex row"
+    >
+      <div
+        class="column"
+      >
+        Resend Invite
+      </div>
+      <div
+        class="column"
+      >
+        <button
+          class="invite-button icon"
+          data-bs-target="#resendConfirmationDialog-undefined"
+          data-bs-toggle="modal"
+          type="button"
+        >
+          Resend Invite
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

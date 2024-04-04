@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from ...views.ValidateRegLinkView import ValidateRegLinkView
 from ...models import Invitee, Role
 from django.contrib.auth.models import User
-from datetime import datetime
+from api.helper_functions import generate_registration_token
 
 
 class ValidateRegLinkViewTestCase(TransactionTestCase):
@@ -13,8 +13,7 @@ class ValidateRegLinkViewTestCase(TransactionTestCase):
 
     DIRECTOR_EMAIL = 'director@example.com'
     PASSWORD = 'Password123'
-    now = datetime.now().strftime('%Y%m%d%H%M%S')
-    token = f"abcdefa0342a4330bc790f23ac70a7b6{now}"
+    reg_token = generate_registration_token()
 
     USER_TOKEN_MISMATCH_MESSAGE = 'Invalid token. Token in request does not match the token generated for this user.'
     USER_TOKEN_EXPIRED_MESSAGE = 'Token is expired'
@@ -27,7 +26,7 @@ class ValidateRegLinkViewTestCase(TransactionTestCase):
         invitee = Invitee(email="volunteer1@example.com",
                           message="Invitee testing",
                           role=Role.objects.get(name='VOLUNTEER'),
-                          registration_token=self.token,
+                          registration_token=self.reg_token,
                           resent_counter=0,
                           created_by=User.objects.get(email=self.DIRECTOR_EMAIL)
                           )
@@ -35,7 +34,7 @@ class ValidateRegLinkViewTestCase(TransactionTestCase):
 
     def test_validate_active_user(self):
         data = {"email": "vincenttaylor@example.com",
-                "token": "62080e2bb45e4b8588a83f4582acc8f420500119173010"}
+                "token": self.reg_token}
         response = self.client.get("/api/validate/", data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), {'detail': {'message': self.USER_ALREADY_ACTIVE_MESSAGE, 'status': 'ACTIVE'}})
@@ -57,7 +56,7 @@ class ValidateRegLinkViewTestCase(TransactionTestCase):
     def test_validate_token_valid(self):
         self.create_invitee()
         data = {"email": "volunteer1@example.com",
-                "token": self.token}
+                "token": self.reg_token}
         response = self.client.get("/api/validate/", data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), {'detail': {'message': self.VALID_TOKEN_MESSAGE, 'status': 'VALID'}})

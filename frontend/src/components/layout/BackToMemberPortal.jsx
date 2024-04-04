@@ -2,22 +2,20 @@ import React from 'react';
 import BackButton from "../../images/arrow_back_24px.png";
 import styles from "./BackToMemberPortal.module.css";
 import { useNavigate } from "react-router-dom";
-import { useTeamContext } from '../../context/team/TeamContext';
+import { getNavItem } from '../../navitems';
 
 
-const BackToMemberPortal = ({teamId, pending}) => {
+const BackToMemberPortal = ({ pageId, pending }) => {
   const navigate = useNavigate();
-  const { teams } = useTeamContext();
-  const teamInfo = teams[teamId];
-  const teamHome = pending ? "Invitees" : teamInfo.pages[0].label;
-  const endpoint = pending ? "/pending" : "/members"
+  const pageInfo = getNavItem(pageId);
+  const path = `/${pageId}/${pending ? "pending" : "members"}`;
 
   return (
     <div>
       <button
         className={styles["back-member-btn"]}
         onClick={() => {
-          navigate("/team/" + teamId + endpoint);
+          navigate(path);
         }}
       >
         <img
@@ -25,7 +23,7 @@ const BackToMemberPortal = ({teamId, pending}) => {
         className={styles["back-btn-img"]}
         alt="Back Button"
       />
-      Back to {teamHome}
+      Back to {pageInfo.name}
       </button>
     </div>
   )

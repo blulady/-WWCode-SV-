@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from django.test import TransactionTestCase
 from api.serializers.InviteeSerializer import InviteeSerializer
+from api.helper_functions import generate_registration_token
 from api.models import Invitee
 from django.conf import settings
 
@@ -8,6 +9,7 @@ from django.conf import settings
 class InviteeModelTest(TransactionTestCase):
     reset_sequences = True
     fixtures = ['users_data.json', 'teams_data.json', 'roles_data.json', 'invitee.json']
+    reg_token = generate_registration_token()
 
     def setUp(self):
         self.invitee = Invitee.objects.get(id=2)
@@ -34,12 +36,10 @@ class InviteeModelTest(TransactionTestCase):
     token should be valid (datetime < 72hrs)
     '''
     def test_invited_status_for_invitee(self):
-        now = datetime.now().strftime('%Y%m%d%H%M%S')
-        token = f"abcdefa0342a4330bc790f23ac70a7b6{now}"
         invitee_serializer = InviteeSerializer(data={
             "email":  "test_invited@example.com",
             "role": 1,
-            "registration_token": token,
+            "registration_token": self.reg_token,
             "resent_counter": 0,
             "created_by": 1
         })
@@ -69,12 +69,10 @@ class InviteeModelTest(TransactionTestCase):
     and the token should be valid (datetime < 72hrs)
     '''
     def test_resent_status_for_invitee(self):
-        now = datetime.now().strftime('%Y%m%d%H%M%S')
-        token = f"abcdefa0342a4330bc790f23ac70a7b6{now}"
         invitee_serializer = InviteeSerializer(data={
             "email":  "test_resent@example.com",
             "role": 1,
-            "registration_token": token,
+            "registration_token": self.reg_token,
             "resent_counter": 1,
             "created_by": 1
         })
